@@ -1,7 +1,10 @@
 import React, { useEffect, useRef } from 'react'
-import axios from 'axios'
+import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet'
+import 'leaflet/dist/leaflet.css';
+import L from 'leaflet';
 
-export default function Maps() {
+
+export default function Maps({ handleSetCoords }) {
 
     let searchRef = useRef()
 
@@ -22,13 +25,18 @@ export default function Maps() {
       }
       fetch('http://localhost:5000/api/leaflet', requestOptions)
       .then(res => res.json())
-      .then(res => console.log(res))
+      .then(res => {
+        console.log('result', res.coordinates)
+        handleSetCoords(res.coordinates)
+      })
     }
 
   return (
     <div>
         <input type='text' placeholder='location' ref={searchRef}/>
         <button onClick={() => handleSearch()}>Search</button>
+        
+        
     </div>
   )
 }
